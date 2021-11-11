@@ -31,7 +31,8 @@ void merge(int a[] , int low, int mid, int high)
         a[k] = c[k];
 }
 
-void mergesort(int a[],int low ,int high){
+void mergesort(int a[],int low ,int high)
+{
   int mid = 0;
   if(low < high)
   {
