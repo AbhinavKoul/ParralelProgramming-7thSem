@@ -28,15 +28,15 @@ int main()
 			printf("%d \t", Matrix[i][j]); 
 		printf("\n"); 
 	}
+
 	for (i = 0; i<Vectorsize; i++) 
 		Vector[i] = i; 
-
-	printf("\n"); 
-	printf("The Vector is \n"); 
+ 
+	printf("\nThe Vector is \n"); 
 	for (i = 0; i<Vectorsize; i++) 
 		printf("%d \t", Vector[i]); 
 
-	for (i = 0; i<NoofRows; i = i + 1) 
+	for (i = 0; i<NoofRows; i++) 
 		Result[i]=0; 
 	
 	#pragma omp parallel for private(j)

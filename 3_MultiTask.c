@@ -5,28 +5,36 @@
 
 double sines[1000];
 int primes[1000];
-
+//prime_num: no of prime numbers we want
 void prime_table(int prime_num)
 {
-  int i, j, p, prime;
-  i = 2;
-  p = 0;
-  while ( p <prime_num )
+  int i, j, p, flag;
+  i = 2;  
+  p = 0;  //keep count
+
+  while(p < prime_num)
   {
-    prime = 1;
-    for ( j = 2; j <i; j++ )
-      if ( ( i % j ) == 0 )
+    flag = 1;  //flag
+
+    for (j = 2; j <i; j++)
+    {
+      if ( i % j  == 0 )
       {
-        prime = 0;
+        flag = 0;
         break;
       }
-    if ( prime )
+    }
+     
+    
+    if (flag)
     {
       primes[p] = i;
       p++;
     }
+    
     i++;
   }
+
 }
 
 void sine_table(int sine_num)
@@ -38,25 +46,25 @@ void sine_table(int sine_num)
 }
   
 
-int main(){
+int main()
+{
 	int size, z, y;
 	printf("Enter the the number of primes and sine table values required : \n");
 	scanf("%d", &size);
-	#pragma omp parallel sections
+	
+  #pragma omp parallel sections
 	{
 		#pragma omp section
 		{
 			prime_table(size);
-			for( y=0;y<size;y++){
+			for( y=0;y<size;y++)
 				printf("%d \n",primes[y]);
-			}
 		}
 		#pragma omp section
 		{
 			sine_table(size);
-			for( z=0;z<size;z++){
+			for( z=0;z<size;z++)
 				printf("%lf \n",sines[z]);
-			}
 		}
 	}
   return 0;
