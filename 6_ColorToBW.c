@@ -9,26 +9,28 @@ int main() {
 
 	int num_threads = 2;
 	
-	int color, x, y, i;
-	int red, green, blue;
-	FILE *fp;
-	
-	if((fp = fopen(input_file, "r")) == NULL) {
-		printf("Error opening file %s\n", input_file);
-		return 1;
-	}
+	File *fp = fopen(input,"r");
+    
+    if(fp == NULL)
+    {
+        printf("file not found")
+        return -1;
+    }
 
 	gdImagePtr img = gdImageCreateFromPng(fp);
 	int width = gdImageSX(img);
 	int height = gdImageSY(img);
-	int combined;
+	
+	int red,green,blue,color,combined,x,y;
 	double t1 = omp_get_wtime();
 	
 	#pragma omp parallel for private(y, color, red, green, blue, combined)
-	for(x=0; x<width; x++) {
+	for(x=0; x<width; x++) 
+	{
 	    #pragma omp critical
 	    {
-			for(y=0; y<height; y++) {
+			for(y=0; y<height; y++) 
+			{
 				color = gdImageGetPixel(img, x, y);
 				red   = gdImageRed(img, color);
 				green = gdImageGreen(img, color);
@@ -41,13 +43,17 @@ int main() {
 	}
 	double t2 = omp_get_wtime();
 	
-	if((fp=fopen(output_file, "w")) == NULL) {
+	fp = fopen(output,"w");
+	if(fp == NULL) 
+	{
 		printf("Error opening output file %s\n", output_file);
 		return 1;
 	}
+	
 	gdImagePng(img, fp);
 	gdImageDestroy(img);
 	fclose(fp);
+
 	printf("File Size: %dx%d\n", width, height);
 	printf("Time Taken: %.3lfms\n",(t2 - t1) * 1000);
 	return 0;
