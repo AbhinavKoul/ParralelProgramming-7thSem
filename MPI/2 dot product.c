@@ -4,8 +4,6 @@
 
 int main()
 {
-    double a[100],b[100];
-
     int rank,size;
     MPI_Init(NULL,NULL);
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
@@ -13,6 +11,8 @@ int main()
 
     if(rank == 0)
         printf("\nStarting omp_dotprod with %d tasks",size);
+        
+    double a[100],b[100];
     
     for(int i = 0;i<100;i++)
         b[i] = a[i] = 1.0;
