@@ -8,11 +8,11 @@ int main()
 {
 	char msg[BUFFER];
 
-	int rank,numprocs;
+	int rank,size;
 
 	MPI_Init(NULL,NULL);
 	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
-	MPI_Comm_size(MPI_COMM_WORLD,&numprocs);
+	MPI_Comm_size(MPI_COMM_WORLD,&size);
 
 	MPI_Status status;
 
@@ -21,7 +21,7 @@ int main()
 	{
 		strcpy(msg,"hello");
 
-		for(int temp = 0;temp<numprocs;temp++)
+		for(int temp = 0;temp<size;temp++)
 		{
 			if(temp!=3)
 				MPI_Send(msg,BUFFER,MPI_CHAR,temp,tag,MPI_COMM_WORLD);
