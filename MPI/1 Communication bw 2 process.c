@@ -16,7 +16,7 @@ int main()
 
 	MPI_Status status;
 
-	int tag =0,root=3;
+	int root=3;
 	if(rank == 3)
 	{
 		strcpy(msg,"hello");
@@ -24,12 +24,12 @@ int main()
 		for(int temp = 0;temp<size;temp++)
 		{
 			if(temp!=3)
-				MPI_Send(msg,BUFFER,MPI_CHAR,temp,tag,MPI_COMM_WORLD);
+				MPI_Send(msg,BUFFER,MPI_CHAR,temp,0,MPI_COMM_WORLD);
 		}
 	}
 	else
 	{
-		MPI_Recv(msg,BUFFER,MPI_CHAR,root,tag,MPI_COMM_WORLD,&status);
+		MPI_Recv(msg,BUFFER,MPI_CHAR,root,0,MPI_COMM_WORLD,&status);
 		printf("\n %s in process with rank %d from the process %d \n",msg,rank,root);
 	}
 

@@ -1,52 +1,50 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <mpi.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<mpi.h>
 
-#define BUFFER_SIZE sizeof(int)*4
+#define BUFFER sizeof(int)*4
 
 int main()
 {
-  int a[2][2] = {{1,2},{3,4}};
-  int b[2][2] = {{1,0},{0,1}};
-  int c[2][2] = {{0,0},{0,0}};
+  int a[2][2] = {{1,2},{3,4}},
+      b[2][2] = {{1,0},{0,1}},
+      c[2][2];
   
   int rank;
   MPI_Init(NULL,NULL);
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Comm_rank(MPI_COMM_WORLD,&rank);
   MPI_Status status;
-  
-  if(rank==0)
+
+  if(rank == 0)
   {
-    //matrix multlipication
-    for(int i=0;i<2;i++)
-    {
-      for(int j=0;j<2;j++)
+    //matrix multiply
+    for(int i = 0;i<2;i++)
+      for(int j = 0;j<2;j++)
       {
-          c[i][j]=0;
-          for(int k=0;k<2;k++)
-            c[i][j] += a[i][k]*b[k][j];
-
+        c[i][j] = 0;
+        for(int k = 0;k<2;k++)
+          c[i][j] += a[i][k]*b[k][j];
       }
-    }
-    
-    //send data
-    MPI_Send(&c,BUFFER_SIZE,MPI_INT,1,0,MPI_COMM_WORLD);
-  }
-  else if(rank==1)
-  {
-    //recieve data
-    MPI_Recv(&c, BUFFER_SIZE, MPI_INT,0,0, MPI_COMM_WORLD,&status); 
-    
-    //print the resultant matrix
-    for(int i=0;i<2;i++)
-    {
-      for(int j=0;j<2;j++)
-        printf("%d\t",c[i][j]);
 
+    //send data (1,0) --> send data to 1 with tag 0
+    MPI_Send(&c,BUFFER,MPI_INT,1,0,MPI_COMM_WORLD);
+  }
+  else if(rank == 1)
+  {
+    //recievce data (0,0) --> o se aa rha hai data 2nd 0 is tag
+    MPI_Recv(&c,BUFFER,MPI_INT,0,0,MPI_COMM_WORLD,&status);
+
+    //print mat
+    for(int i = 0;i<2;i++)
+    {
+      for(int j = 0;j<2;j++)
+        printf(" %d ",c[i][j]);
       printf("\n");
     }
   }
 
   MPI_Finalize();
   return 0;
+
+  
 }
